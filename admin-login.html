@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EATGO - Acceso Administrador</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .admin-login-badge {
+      background: var(--amarillo);
+      color: var(--negro);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+    .admin-hint {
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-top: 16px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .admin-hint strong { color: var(--amarillo); }
+  </style>
+</head>
+<body class="auth-body">
+  <div class="auth-container">
+    <div class="auth-logo">
+      <h1><span class="eat">EAT</span><span class="go">GO</span></h1>
+    </div>
+
+    <div style="text-align:center;margin-bottom:8px">
+      <span class="admin-login-badge">🔐 Panel Administrador</span>
+    </div>
+
+    <h2 class="auth-welcome">Acceso Admin</h2>
+    <p class="auth-subtitle">Ingresa con tus credenciales<br>de administrador</p>
+
+    <form id="adminLoginForm" style="width:100%">
+      <div class="form-group">
+        <label>Correo administrador</label>
+        <input type="email" id="email" placeholder="admin@eatgo.com" required>
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="password" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn-primary">🔐 Ingresar al panel</button>
+    </form>
+
+    <div class="admin-hint">
+      <div>Credenciales por defecto:</div>
+      <div><strong>admin@eatgo.com</strong> / <strong>admin123</strong></div>
+    </div>
+
+    <p class="auth-link" style="margin-top:16px"><a href="index.html">← Volver al inicio</a></p>
+  </div>
+  <div id="toast" class="toast"></div>
+  <script src="js/storage.js"></script>
+  <script>
+    // Redirigir si ya es admin logueado
+    const u = Storage.getCurrentUser();
+    if (u && u.role === 'admin') window.location.href = 'admin-dashboard.html';
+
+    function showToast(msg, type='error') {
+      let t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast' + (type==='success' ? ' success' : '');
+      setTimeout(() => t.classList.add('show'), 10);
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      const user = Storage.getUserByEmail(email);
+      if (!user) { showToast('Usuario no encontrado'); return; }
+      if (user.role !== 'admin') { showToast('No tienes permisos de administrador'); return; }
+      if (user.password !== password) { showToast('Contraseña incorrecta'); return; }
+
+      Storage.setCurrentUser(user);
+      showToast('Bienvenido, Administrador', 'success');
+      setTimeout(() => { window.location.href = 'admin-dashboard.html'; }, 800);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="stylesheet" href="css/ai-chat.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EATGO - Confirmar Pedido</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <a href="menu.html" class="header-logo">EATGO</a>
+  <nav class="header-nav">
+    <a href="menu.html">Menú</a>
+    <a href="promos.html">Promos</a>
+    <a href="my-orders.html">Ordenes</a>
+  </nav>
+  <div class="header-right">
+    <a href="cart.html" class="btn-cart">🛒 <span id="cartBadge" class="cart-badge">0</span></a>
+    <a href="profile.html" class="btn-user">👤</a>
+  </div>
+</header>
+
+<div class="main-content">
+  <main class="page-area" style="padding:24px">
+    <h1 class="page-title">Confirmar Pedido</h1>
+
+    <div class="confirm-layout">
+      <!-- LEFT: Delivery info + Payment -->
+      <div class="confirm-left">
+        <div class="confirm-title">📍 Datos de entrega</div>
+
+        <div class="form-group" style="margin-bottom:14px">
+          <label style="color:var(--negro);font-size:12px;font-weight:700;display:block;margin-bottom:5px">Nombre completo</label>
+          <input type="text" id="nombreEntrega" style="width:100%;padding:10px 14px;border-radius:8px;border:2px solid rgba(0,0,0,0.1);font-family:Nunito,sans-serif;font-size:13px;outline:none" placeholder="Tu nombre">
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px">
+          <label style="color:var(--negro);font-size:12px;font-weight:700;display:block;margin-bottom:5px">Dirección de entrega</label>
+          <input type="text" id="direccion" style="width:100%;padding:10px 14px;border-radius:8px;border:2px solid rgba(0,0,0,0.1);font-family:Nunito,sans-serif;font-size:13px;outline:none" placeholder="Calle 1 # 2-34, Apto 501">
+        </div>
+
+        <div class="form-group" style="margin-bottom:20px">
+          <label style="color:var(--negro);font-size:12px;font-weight:700;display:block;margin-bottom:5px">Teléfono de contacto</label>
+          <input type="tel" id="telefono" style="width:100%;padding:10px 14px;border-radius:8px;border:2px solid rgba(0,0,0,0.1);font-family:Nunito,sans-serif;font-size:13px;outline:none" placeholder="300 000 0000">
+        </div>
+
+        <div class="confirm-title">💳 Método de pago</div>
+
+        <label class="confirm-field">
+          <input type="radio" name="pago" value="Efectivo" checked> 💵 Efectivo
+        </label>
+        <label class="confirm-field">
+          <input type="radio" name="pago" value="Tarjeta de crédito"> 💳 Tarjeta de crédito
+        </label>
+        <label class="confirm-field">
+          <input type="radio" name="pago" value="Tarjeta de débito"> 🏦 Tarjeta de débito
+        </label>
+        <label class="confirm-field">
+          <input type="radio" name="pago" value="Nequi/Daviplata"> 📱 Nequi / Daviplata
+        </label>
+
+        <div style="margin-top:16px">
+          <label style="color:var(--negro);font-size:12px;font-weight:700;display:block;margin-bottom:5px">Notas especiales (opcional)</label>
+          <textarea id="notas" style="width:100%;padding:10px 14px;border-radius:8px;border:2px solid rgba(0,0,0,0.1);font-family:Nunito,sans-serif;font-size:13px;outline:none;resize:vertical;min-height:70px" placeholder="Instrucciones especiales, sin cebolla, etc."></textarea>
+        </div>
+      </div>
+
+      <!-- RIGHT: Order summary -->
+      <div class="confirm-right">
+        <div class="section-title">📋 Descripción pedido</div>
+        <div id="orderItemsList">
+          <!-- Renderizado por JS -->
+        </div>
+        <div style="margin-top:14px;padding-top:10px;border-top:2px solid var(--amarillo)">
+          <div class="summary-row"><span>Subtotal</span><span id="confirmSubtotal">$0</span></div>
+          <div class="summary-row"><span>Domicilio</span><span id="confirmDomicilio">$0</span></div>
+          <div class="summary-row total"><span>TOTAL</span><span id="confirmTotal" style="color:var(--rojo)">$0</span></div>
+        </div>
+        <button onclick="placeOrder()" class="btn-confirm" style="margin-top:14px">
+          ✓ Realizar pedido
+        </button>
+        <a href="cart.html" style="display:block;text-align:center;color:var(--rojo);font-weight:700;font-size:13px;margin-top:10px;text-decoration:none">← Volver al carrito</a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="js/storage.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!Storage.getCurrentUser()) { window.location.href = 'index.html'; return; }
+    const user = Storage.getCurrentUser();
+    const n = document.getElementById('nombreEntrega');
+    const t = document.getElementById('telefono');
+    if (n) n.value = user.nombre || '';
+    if (t) t.value = user.telefono || '';
+    initConfirmPage();
+  });
+</script>
+<script src="js/orders.js"></script>
+
+  <script src="js/ai-chat.js"></script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="stylesheet" href="css/ai-chat.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EATGO - Estado del Pedido</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <a href="menu.html" class="header-logo">EATGO</a>
+  <nav class="header-nav">
+    <a href="menu.html">Menú</a>
+    <a href="promos.html">Promos</a>
+    <a href="my-orders.html" class="active">Ordenes</a>
+  </nav>
+  <div class="header-right">
+    <a href="cart.html" class="btn-cart">🛒 <span id="cartBadge" class="cart-badge">0</span></a>
+    <a href="profile.html" class="btn-user">👤</a>
+  </div>
+</header>
+
+<div class="main-content">
+  <main class="page-area" style="padding:24px">
+    <div class="status-page">
+
+      <div class="status-card">
+        <div class="status-order-num" id="statusOrderId">Pedido #---</div>
+        <div class="status-main-title">Estado del pedido</div>
+
+        <!-- Steps -->
+        <div class="status-steps">
+          <div class="status-step">
+            <div class="step-circle done" id="step0">🍳</div>
+            <div class="step-label" id="label0">Preparando</div>
+          </div>
+          <div class="step-line" id="line0"></div>
+          <div class="status-step">
+            <div class="step-circle" id="step1">🛵</div>
+            <div class="step-label" id="label1">En camino</div>
+          </div>
+          <div class="step-line" id="line1"></div>
+          <div class="status-step">
+            <div class="step-circle" id="step2">✅</div>
+            <div class="step-label" id="label2">Entregado</div>
+          </div>
+        </div>
+
+        <!-- Order details -->
+        <div id="orderDetails" style="background:#fffbeb;border-radius:12px;padding:16px;margin-top:20px;text-align:left">
+          <div style="font-weight:800;font-size:14px;color:var(--rojo);margin-bottom:10px">Detalle del pedido</div>
+          <div id="orderItemsDetail"></div>
+          <div style="display:flex;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:2px solid #eee">
+            <span style="font-weight:700;font-size:13px">Total</span>
+            <span style="font-weight:900;font-size:14px;color:var(--rojo)" id="orderTotalDetail"></span>
+          </div>
+        </div>
+
+        <div style="margin-top:20px;display:flex;gap:10px;justify-content:center">
+          <a href="my-orders.html" class="btn-confirm" style="display:inline-block;width:auto;padding:10px 24px;text-decoration:none;font-size:13px">Ver todos los pedidos</a>
+          <a href="menu.html" style="display:inline-block;padding:10px 24px;background:var(--amarillo);color:var(--negro);text-decoration:none;border-radius:10px;font-weight:800;font-size:13px">+ Nuevo pedido</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="js/storage.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!Storage.getCurrentUser()) { window.location.href = 'index.html'; return; }
+
+    const order = Storage.getCurrentOrder();
+    if (!order) { window.location.href = 'my-orders.html'; return; }
+
+    // Order ID
+    document.getElementById('statusOrderId').textContent = 'Pedido ' + order.id;
+
+    // Status steps
+    const statuses = ['Preparando', 'En camino', 'Entregado'];
+    const currentIdx = statuses.indexOf(order.estado);
+
+    for (let i = 0; i < 3; i++) {
+      const circle = document.getElementById('step' + i);
+      const label  = document.getElementById('label' + i);
+      if (i < currentIdx) {
+        circle.classList.add('done');
+      } else if (i === currentIdx) {
+        circle.classList.add('active');
+        label.classList.add('active');
+      }
+    }
+    for (let i = 0; i < 2; i++) {
+      if (i < currentIdx) document.getElementById('line' + i).classList.add('done');
+    }
+
+    // Items detail
+    const items = order.items || [];
+    const itemsHTML = items.map(i => `
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+        <span>${i.emoji||'🍽️'} ${i.nombre} x${i.qty}</span>
+        <span style="font-weight:700;color:var(--rojo)">${Storage.formatPrice(i.precio * i.qty)}</span>
+      </div>
+    `).join('');
+    document.getElementById('orderItemsDetail').innerHTML = itemsHTML;
+    document.getElementById('orderTotalDetail').textContent = Storage.formatPrice(order.total);
+
+    // Update cart badge
+    const badge = document.getElementById('cartBadge');
+    if (badge) badge.textContent = Storage.getCartCount();
+  });
+</script>
+
+  <script src="js/ai-chat.js"></script>
+</body>
+</html>

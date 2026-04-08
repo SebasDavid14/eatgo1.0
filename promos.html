@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="stylesheet" href="css/ai-chat.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EATGO - Promociones</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .promos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 900px; margin: 0 auto; }
+    .promo-card {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      transition: transform .2s;
+    }
+    .promo-card:hover { transform: translateY(-4px); }
+    .promo-card-header {
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .promo-card-body { padding: 16px 24px 20px; }
+    .promo-card-title { font-family: 'Bebas Neue', cursive; font-size: 28px; line-height: 1; }
+    .promo-card-sub { font-size: 13px; font-weight: 700; margin-top: 4px; }
+    .promo-card-desc { font-size: 13px; color: #555; margin-bottom: 12px; }
+    .promo-num { font-family: 'Bebas Neue', cursive; font-size: 72px; line-height: 1; opacity: .15; position: absolute; right: 20px; top: 10px; }
+    .promo-header-wrap { position: relative; }
+    .promo-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <a href="menu.html" class="header-logo">EATGO</a>
+  <nav class="header-nav">
+    <a href="menu.html">Menú</a>
+    <a href="promos.html" class="active">Promos</a>
+    <a href="my-orders.html">Ordenes</a>
+  </nav>
+  <div class="header-right">
+    <a href="cart.html" class="btn-cart">🛒 <span id="cartBadge" class="cart-badge">0</span></a>
+    <a href="profile.html" class="btn-user">👤</a>
+  </div>
+</header>
+
+<div class="main-content">
+  <aside class="sidebar">
+    <a class="sidebar-item" href="menu.html"><span class="sidebar-icon">🍽️</span><span class="sidebar-label">Todo</span></a>
+    <a class="sidebar-item" href="menu.html"><span class="sidebar-icon">🍔</span><span class="sidebar-label">Hambur.</span></a>
+    <a class="sidebar-item" href="menu.html"><span class="sidebar-icon">🍕</span><span class="sidebar-label">Pizza</span></a>
+    <a class="sidebar-item" href="menu.html"><span class="sidebar-icon">🌭</span><span class="sidebar-label">Combos</span></a>
+    <a class="sidebar-item" href="menu.html"><span class="sidebar-icon">🥤</span><span class="sidebar-label">Bebidas</span></a>
+    <a class="sidebar-item" href="menu.html"><span class="sidebar-icon">🍦</span><span class="sidebar-label">Postres</span></a>
+  </aside>
+
+  <main class="page-area">
+    <h1 class="page-title">Promociones</h1>
+
+    <div class="promos-grid">
+
+      <!-- 2x1 -->
+      <div class="promo-card" style="background:var(--amarillo)">
+        <div class="promo-card-header promo-header-wrap">
+          <div>
+            <div class="promo-tag" style="background:var(--rojo);color:white">🔥 OFERTA LIMITADA</div>
+            <div class="promo-2x1" style="font-family:'Bebas Neue',cursive;font-size:70px;color:var(--rojo);line-height:1">2X1</div>
+          </div>
+          <span style="font-size:64px">🍔</span>
+        </div>
+        <div class="promo-card-body">
+          <div class="promo-card-desc">Por la compra de 1 malteada, llevas gratis otra malteada del mismo sabor.</div>
+          <a href="menu.html" class="btn-confirm" style="display:inline-block;width:auto;padding:10px 20px;text-decoration:none;font-size:13px">Ver Malteadas →</a>
+        </div>
+      </div>
+
+      <!-- Oferta Comida Rápida -->
+      <div class="promo-card" style="background:var(--rojo)">
+        <div class="promo-card-header" style="flex-direction:column;align-items:flex-start">
+          <div style="color:var(--amarillo);font-size:14px;font-weight:800">VAMOS POR UN</div>
+          <div style="font-family:'Bebas Neue',cursive;font-size:44px;color:white;line-height:1">ANTOJO<br>ANTOJO</div>
+        </div>
+        <div style="background:var(--amarillo);padding:14px 24px 20px">
+          <div style="font-family:'Bebas Neue',cursive;font-size:26px;color:var(--rojo);line-height:1">OFERTA<br>COMIDA RÁPIDA</div>
+          <a href="menu.html" class="promo-red-btn" style="background:var(--rojo);color:white;display:inline-block;padding:8px 18px;border-radius:20px;font-weight:800;font-size:12px;text-decoration:none;margin-top:8px">¡PEDIR AHORA!</a>
+        </div>
+      </div>
+
+      <!-- Domicilio gratis -->
+      <div class="promo-card" style="background:white;border:3px solid var(--amarillo)">
+        <div class="promo-card-header" style="background:var(--amarillo)">
+          <div>
+            <div class="promo-card-title" style="color:var(--rojo)">DOMICILIO GRATIS</div>
+            <div class="promo-card-sub" style="color:var(--negro)">En pedidos mayores a $50,000</div>
+          </div>
+          <span style="font-size:52px">🛵</span>
+        </div>
+        <div class="promo-card-body">
+          <div class="promo-card-desc">Realiza tu pedido por más de $50,000 y no pagas domicilio. ¡Aprovecha!</div>
+          <a href="menu.html" class="btn-confirm" style="display:inline-block;width:auto;padding:10px 20px;text-decoration:none;font-size:13px">Pedir ahora →</a>
+        </div>
+      </div>
+
+      <!-- Combo familiar -->
+      <div class="promo-card" style="background:white;border:3px solid var(--rojo)">
+        <div class="promo-card-header" style="background:var(--rojo)">
+          <div>
+            <div class="promo-card-title" style="color:var(--amarillo)">COMBO FAMILIAR</div>
+            <div class="promo-card-sub" style="color:white">Hamburguesa + Pizza + 2 Bebidas</div>
+          </div>
+          <span style="font-size:52px">👨‍👩‍👧‍👦</span>
+        </div>
+        <div class="promo-card-body">
+          <div class="promo-card-desc">El combo perfecto para toda la familia. Ahorra hasta un 20% en tu pedido.</div>
+          <a href="menu.html" class="btn-confirm" style="display:inline-block;width:auto;padding:10px 20px;text-decoration:none;font-size:13px">Ver combo →</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="js/storage.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!Storage.getCurrentUser()) window.location.href = 'index.html';
+    const badge = document.getElementById('cartBadge');
+    if (badge) badge.textContent = Storage.getCartCount();
+  });
+</script>
+
+  <script src="js/ai-chat.js"></script>
+</body>
+</html>

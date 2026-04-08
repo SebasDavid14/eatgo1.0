@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EATGO - Crear Cuenta</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-body">
+  <div class="auth-container">
+    <div class="auth-logo">
+      <h1><span class="eat">EAT</span><span class="go">GO</span></h1>
+    </div>
+
+    <h2 class="auth-welcome">Crear cuenta</h2>
+    <p class="auth-subtitle">Regístrate y comienza a disfrutar<br>la mejor comida a domicilio</p>
+
+    <form id="registerForm" style="width:100%">
+      <div class="form-group">
+        <label>Nombre completo</label>
+        <input type="text" id="nombre" placeholder="Tu nombre completo" required>
+      </div>
+      <div class="form-group">
+        <label>Correo electrónico</label>
+        <input type="email" id="email" placeholder="correo@ejemplo.com" required>
+      </div>
+      <div class="form-group">
+        <label>Teléfono</label>
+        <input type="tel" id="telefono" placeholder="300 000 0000">
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="password" placeholder="Mínimo 6 caracteres" required>
+      </div>
+      <div class="form-group">
+        <label>Confirmar contraseña</label>
+        <input type="password" id="confirm" placeholder="Repite la contraseña" required>
+      </div>
+      <button type="submit" class="btn-primary">Crear cuenta</button>
+    </form>
+
+    <p class="auth-link">¿Ya tienes cuenta? <a href="index.html">Iniciar sesión</a></p>
+  </div>
+  <div id="toast" class="toast"></div>
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

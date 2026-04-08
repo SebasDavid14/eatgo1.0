@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="stylesheet" href="css/ai-chat.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EATGO - Mi Perfil</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <a href="menu.html" class="header-logo">EATGO</a>
+  <nav class="header-nav">
+    <a href="menu.html">Menú</a>
+    <a href="promos.html">Promos</a>
+    <a href="my-orders.html">Ordenes</a>
+  </nav>
+  <div class="header-right">
+    <a href="cart.html" class="btn-cart">🛒 <span id="cartBadge" class="cart-badge">0</span></a>
+    <a href="profile.html" class="btn-user">👤</a>
+  </div>
+</header>
+
+<div class="main-content">
+  <main class="page-area" style="padding:24px">
+    <h1 class="page-title">Mi Perfil</h1>
+
+    <div class="profile-layout" style="max-width:800px;margin:0 auto">
+
+      <div style="flex:1">
+        <!-- Header card -->
+        <div class="profile-header">
+          <div class="profile-avatar" id="avatarDisplay">👤</div>
+          <div>
+            <div class="profile-name" id="profileNameDisplay">Cargando...</div>
+            <div class="profile-email" id="profileEmailDisplay"></div>
+            <div style="font-size:11px;opacity:.7;margin-top:4px">Cliente EATGO</div>
+          </div>
+        </div>
+
+        <!-- Edit form -->
+        <div class="profile-card">
+          <div class="profile-section">
+            <div class="profile-section-title">Información personal</div>
+            <div class="profile-field">
+              <label>Nombre completo</label>
+              <input type="text" id="editNombre" placeholder="Tu nombre">
+            </div>
+            <div class="profile-field">
+              <label>Correo electrónico</label>
+              <input type="email" id="editEmail" placeholder="correo@ejemplo.com">
+            </div>
+            <div class="profile-field">
+              <label>Teléfono</label>
+              <input type="tel" id="editTelefono" placeholder="300 000 0000">
+            </div>
+          </div>
+
+          <div class="profile-section">
+            <div class="profile-section-title">Dirección de entrega</div>
+            <div class="profile-field">
+              <label>Dirección</label>
+              <input type="text" id="editDireccion" placeholder="Calle 1 # 2-34">
+            </div>
+            <div class="profile-field">
+              <label>Ciudad</label>
+              <input type="text" id="editCiudad" placeholder="Tu ciudad">
+            </div>
+          </div>
+
+          <div class="profile-section">
+            <div class="profile-section-title">Seguridad</div>
+            <div class="profile-field">
+              <label>Nueva contraseña (dejar en blanco para no cambiar)</label>
+              <input type="password" id="editPassword" placeholder="Nueva contraseña">
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button onclick="saveProfile()" class="btn-save">💾 Guardar cambios</button>
+            <button onclick="doLogout()" class="btn-logout">🚪 Cerrar sesión</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats sidebar -->
+      <div style="width:240px">
+        <div class="profile-card" style="margin-bottom:16px">
+          <div class="profile-section-title" style="margin-bottom:12px">Estadísticas</div>
+          <div style="text-align:center;padding:10px 0">
+            <div style="font-family:'Bebas Neue',cursive;font-size:44px;color:var(--rojo);line-height:1" id="statPedidos">0</div>
+            <div style="font-size:12px;color:#666;font-weight:700">Pedidos realizados</div>
+          </div>
+          <div style="text-align:center;padding:10px 0;border-top:1px solid #f0f0f0">
+            <div style="font-family:'Bebas Neue',cursive;font-size:32px;color:var(--rojo);line-height:1" id="statGastado">$0</div>
+            <div style="font-size:12px;color:#666;font-weight:700">Total gastado</div>
+          </div>
+        </div>
+
+        <div class="profile-card">
+          <div class="profile-section-title" style="margin-bottom:12px">Accesos rápidos</div>
+          <a href="my-orders.html" style="display:block;padding:10px;background:#fffbeb;border-radius:8px;text-decoration:none;color:var(--negro);font-weight:700;font-size:13px;margin-bottom:8px;transition:all .2s" onmouseover="this.style.background='var(--amarillo)'" onmouseout="this.style.background='#fffbeb'">📦 Mis pedidos</a>
+          <a href="menu.html" style="display:block;padding:10px;background:#fffbeb;border-radius:8px;text-decoration:none;color:var(--negro);font-weight:700;font-size:13px;transition:all .2s" onmouseover="this.style.background='var(--amarillo)'" onmouseout="this.style.background='#fffbeb'">🍔 Ir al menú</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="js/storage.js"></script>
+<script>
+  function showToast(msg, type='success') {
+    let t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast' + (type==='success' ? ' success' : '');
+    setTimeout(() => t.classList.add('show'), 10);
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const user = Storage.getCurrentUser();
+    if (!user) { window.location.href = 'index.html'; return; }
+
+    const badge = document.getElementById('cartBadge');
+    if (badge) badge.textContent = Storage.getCartCount();
+
+    document.getElementById('profileNameDisplay').textContent = user.nombre;
+    document.getElementById('profileEmailDisplay').textContent = user.email;
+    document.getElementById('editNombre').value = user.nombre || '';
+    document.getElementById('editEmail').value = user.email || '';
+    document.getElementById('editTelefono').value = user.telefono || '';
+    document.getElementById('editDireccion').value = user.direccion || '';
+    document.getElementById('editCiudad').value = user.ciudad || '';
+
+    // Stats
+    const orders = Storage.getUserOrders();
+    const total = orders.reduce((t, o) => t + (o.total||0), 0);
+    document.getElementById('statPedidos').textContent = orders.length;
+    document.getElementById('statGastado').textContent = Storage.formatPrice(total);
+  });
+
+  function saveProfile() {
+    const user = Storage.getCurrentUser();
+    if (!user) return;
+    const nombre    = document.getElementById('editNombre').value.trim();
+    const email     = document.getElementById('editEmail').value.trim();
+    const telefono  = document.getElementById('editTelefono').value.trim();
+    const direccion = document.getElementById('editDireccion').value.trim();
+    const ciudad    = document.getElementById('editCiudad').value.trim();
+    const password  = document.getElementById('editPassword').value;
+
+    if (!nombre || !email) { showToast('Nombre y correo son requeridos', 'error'); return; }
+
+    const updates = { nombre, email, telefono, direccion, ciudad };
+    if (password.length >= 6) updates.password = password;
+    else if (password.length > 0 && password.length < 6) { showToast('La contraseña debe tener al menos 6 caracteres', 'error'); return; }
+
+    const users = Storage.getUsers();
+    const idx = users.findIndex(u => u.id === user.id);
+    if (idx > -1) {
+      users[idx] = { ...users[idx], ...updates };
+      Storage.saveUsers(users);
+      Storage.setCurrentUser(users[idx]);
+    }
+
+    document.getElementById('profileNameDisplay').textContent = nombre;
+    document.getElementById('editPassword').value = '';
+    showToast('Perfil actualizado correctamente', 'success');
+  }
+
+  function doLogout() {
+    if (confirm('¿Cerrar sesión?')) {
+      Storage.logout();
+      window.location.href = 'index.html';
+    }
+  }
+</script>
+
+  <script src="js/ai-chat.js"></script>
+</body>
+</html>

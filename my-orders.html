@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="stylesheet" href="css/ai-chat.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EATGO - Mis Pedidos</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <a href="menu.html" class="header-logo">EATGO</a>
+  <nav class="header-nav">
+    <a href="menu.html">Menú</a>
+    <a href="promos.html">Promos</a>
+    <a href="my-orders.html" class="active">Ordenes</a>
+  </nav>
+  <div class="header-right">
+    <a href="cart.html" class="btn-cart">🛒 <span id="cartBadge" class="cart-badge">0</span></a>
+    <a href="profile.html" class="btn-user">👤</a>
+  </div>
+</header>
+
+<div class="main-content">
+  <main class="page-area" style="padding:24px">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;max-width:900px;margin-left:auto;margin-right:auto">
+      <h1 class="page-title" style="margin-bottom:0">Mis pedidos</h1>
+      <a href="menu.html" class="btn-confirm" style="display:inline-block;width:auto;padding:9px 20px;text-decoration:none;font-size:13px">+ Nuevo pedido</a>
+    </div>
+
+    <p style="max-width:900px;margin:0 auto 16px;font-size:13px;color:#666;font-weight:600">Revisa el estado de tus pedidos recientes</p>
+
+    <div class="orders-table-wrap" style="max-width:900px;margin:0 auto">
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>N° Pedido</th>
+            <th>Fecha</th>
+            <th>Producto(s)</th>
+            <th>Estado</th>
+            <th>Total</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody id="ordersTableBody">
+          <tr><td colspan="6" style="text-align:center;padding:30px;color:#888;font-weight:700">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="js/storage.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!Storage.getCurrentUser()) { window.location.href = 'index.html'; return; }
+    const badge = document.getElementById('cartBadge');
+    if (badge) badge.textContent = Storage.getCartCount();
+  });
+</script>
+<script src="js/orders.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    initMyOrdersPage();
+  });
+</script>
+
+  <script src="js/ai-chat.js"></script>
+</body>
+</html>

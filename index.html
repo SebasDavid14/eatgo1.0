@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EATGO - Inicia Sesión</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-body">
+  <div class="auth-container">
+    <div class="auth-logo">
+      <h1><span class="eat">EAT</span><span class="go">GO</span></h1>
+    </div>
+    <p class="auth-tagline">Disfruta tu comida favorita<br>a domicilio en minutos</p>
+
+    <h2 class="auth-welcome">¡Bienvenido de nuevo!</h2>
+    <p class="auth-subtitle">Conéctate con tu cuenta para continuar<br>haciendo el pedido a domicilio.</p>
+
+    <form id="loginForm" style="width:100%">
+      <div class="form-group">
+        <label>Correo electrónico</label>
+        <input type="email" id="email" placeholder="correo@ejemplo.com" required>
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="password" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn-primary">Iniciar sesión</button>
+    </form>
+
+    <div class="social-divider">o continúa con</div>
+    <div class="social-btns">
+      <button class="btn-social">🌐 Google</button>
+      <button class="btn-social">🐦 Twitter</button>
+    </div>
+
+    <p class="auth-link">¿No tienes cuenta? <a href="register.html">Regístrate aquí</a></p>
+    <p class="auth-link" style="margin-top:8px">¿Eres administrador? <a href="admin-login.html">Ingresar como Admin</a></p>
+  </div>
+  <div id="toast" class="toast"></div>
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

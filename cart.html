@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="stylesheet" href="css/ai-chat.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EATGO - Carrito</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <a href="menu.html" class="header-logo">EATGO</a>
+  <nav class="header-nav">
+    <a href="menu.html">Menú</a>
+    <a href="promos.html">Promos</a>
+    <a href="my-orders.html">Ordenes</a>
+  </nav>
+  <div class="header-right">
+    <a href="cart.html" class="btn-cart">🛒 <span id="cartBadge" class="cart-badge">0</span></a>
+    <a href="profile.html" class="btn-user">👤</a>
+  </div>
+</header>
+
+<div class="main-content">
+  <main class="page-area" style="padding:24px">
+    <h1 class="page-title">Mi Carrito</h1>
+
+    <div class="cart-layout">
+      <!-- ITEMS -->
+      <div class="cart-items-section">
+        <div class="section-title">🛒 Productos seleccionados</div>
+
+        <!-- Empty state -->
+        <div id="emptyCart" class="empty-cart">
+          <div class="empty-icon">🛒</div>
+          <div style="font-weight:800;font-size:16px;margin-bottom:6px">Tu carrito está vacío</div>
+          <div style="font-size:13px;color:#888;margin-bottom:16px">Agrega productos desde el menú</div>
+          <a href="menu.html" class="btn-confirm" style="display:inline-block;width:auto;padding:10px 22px;text-decoration:none">Ver Menú</a>
+        </div>
+
+        <!-- Cart items list -->
+        <div id="cartList"></div>
+      </div>
+
+      <!-- SUMMARY -->
+      <div class="cart-summary-section">
+        <div class="section-title">📋 Resumen del pedido</div>
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="subtotal">$0</span>
+        </div>
+        <div class="summary-row">
+          <span>Domicilio</span>
+          <span id="domicilio">$0</span>
+        </div>
+        <div class="summary-row total">
+          <span>TOTAL</span>
+          <span id="total">$0</span>
+        </div>
+        <div id="cartActions" class="hidden">
+          <a href="confirm-order.html" class="btn-confirm">✓ Confirmar pedido</a>
+          <button onclick="clearCart()" class="btn-secondary" style="margin-top:8px;border-color:#cc0000;color:#cc0000">🗑️ Vaciar carrito</button>
+        </div>
+        <div style="margin-top:14px">
+          <a href="menu.html" style="color:var(--rojo);font-weight:700;font-size:13px;text-decoration:none">← Seguir comprando</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="js/storage.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!Storage.getCurrentUser()) window.location.href = 'index.html';
+  });
+
+  function clearCart() {
+    if (confirm('¿Vaciar el carrito?')) {
+      Storage.clearCart();
+      location.reload();
+    }
+  }
+</script>
+<script src="js/cart.js"></script>
+
+  <script src="js/ai-chat.js"></script>
+</body>
+</html>

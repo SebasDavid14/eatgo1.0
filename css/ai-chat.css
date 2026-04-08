@@ -1,0 +1,344 @@
+/* =====================================================
+   EATGO - Widget de IA (Asistente Virtual)
+   ===================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+/* ---- Botón flotante ---- */
+#eatgo-ai-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 62px;
+  height: 62px;
+  background: linear-gradient(135deg, #8B0000, #C0001A);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  z-index: 9000;
+  box-shadow: 0 4px 20px rgba(139,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  transition: all .3s cubic-bezier(.34,1.56,.64,1);
+  animation: pulse-btn 2.5s infinite;
+}
+
+#eatgo-ai-btn:hover {
+  transform: scale(1.12);
+  box-shadow: 0 6px 28px rgba(139,0,0,0.6);
+}
+
+#eatgo-ai-btn.open {
+  background: linear-gradient(135deg, #333, #555);
+  animation: none;
+  transform: rotate(0deg);
+}
+
+@keyframes pulse-btn {
+  0%, 100% { box-shadow: 0 4px 20px rgba(139,0,0,0.5); }
+  50%       { box-shadow: 0 4px 32px rgba(139,0,0,0.8), 0 0 0 8px rgba(139,0,0,0.1); }
+}
+
+/* Notificación dot */
+#eatgo-ai-btn::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 12px;
+  height: 12px;
+  background: #F5C300;
+  border-radius: 50%;
+  border: 2px solid white;
+  animation: blink-dot 1.8s infinite;
+}
+#eatgo-ai-btn.open::after { display: none; }
+
+@keyframes blink-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ---- Ventana del chat ---- */
+#eatgo-ai-panel {
+  position: fixed;
+  bottom: 104px;
+  right: 28px;
+  width: 360px;
+  max-height: 580px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 12px 50px rgba(0,0,0,0.22);
+  z-index: 8999;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.85) translateY(30px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all .35s cubic-bezier(.34,1.56,.64,1);
+  transform-origin: bottom right;
+  font-family: 'Nunito', sans-serif;
+}
+
+#eatgo-ai-panel.open {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Header */
+.ai-header {
+  background: linear-gradient(135deg, #8B0000, #C0001A);
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.ai-avatar {
+  width: 42px;
+  height: 42px;
+  background: #F5C300;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.3);
+}
+
+.ai-header-info { flex: 1; }
+
+.ai-name {
+  color: white;
+  font-weight: 900;
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.ai-status {
+  color: #F5C300;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ai-status::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  background: #4caf50;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.ai-header-btn {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all .2s;
+}
+.ai-header-btn:hover { background: rgba(255,255,255,0.25); }
+
+/* Mensajes */
+.ai-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #fafafa;
+  scroll-behavior: smooth;
+}
+
+.ai-messages::-webkit-scrollbar { width: 4px; }
+.ai-messages::-webkit-scrollbar-track { background: transparent; }
+.ai-messages::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
+
+.ai-msg {
+  display: flex;
+  gap: 8px;
+  animation: fadeInMsg .3s ease;
+  max-width: 100%;
+}
+
+@keyframes fadeInMsg {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ai-msg.user { flex-direction: row-reverse; }
+
+.ai-msg-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.ai-msg.bot  .ai-msg-avatar { background: #F5C300; }
+.ai-msg.user .ai-msg-avatar { background: #8B0000; color: white; }
+
+.ai-msg-bubble {
+  max-width: 78%;
+  padding: 10px 13px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #222;
+  word-wrap: break-word;
+}
+
+.ai-msg.bot  .ai-msg-bubble {
+  background: white;
+  border-radius: 4px 14px 14px 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  border: 1px solid #f0f0f0;
+}
+
+.ai-msg.user .ai-msg-bubble {
+  background: linear-gradient(135deg, #8B0000, #C0001A);
+  color: white;
+  border-radius: 14px 4px 14px 14px;
+}
+
+.ai-msg-time {
+  font-size: 10px;
+  color: #aaa;
+  margin-top: 3px;
+  padding: 0 4px;
+}
+
+/* Typing indicator */
+.ai-typing {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.typing-dots {
+  background: white;
+  border: 1px solid #f0f0f0;
+  border-radius: 4px 14px 14px 14px;
+  padding: 10px 14px;
+  display: flex;
+  gap: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+.typing-dots span {
+  width: 7px;
+  height: 7px;
+  background: #ccc;
+  border-radius: 50%;
+  animation: typing-bounce .8s infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: .15s; }
+.typing-dots span:nth-child(3) { animation-delay: .30s; }
+
+@keyframes typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); background: #ccc; }
+  30%            { transform: translateY(-6px); background: #8B0000; }
+}
+
+/* Sugerencias rápidas */
+.ai-suggestions {
+  padding: 8px 14px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  background: white;
+  border-top: 1px solid #f0f0f0;
+  flex-shrink: 0;
+}
+
+.ai-suggest-btn {
+  background: #fff3b0;
+  border: 1.5px solid #F5C300;
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  color: #333;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.ai-suggest-btn:hover {
+  background: #F5C300;
+  transform: translateY(-1px);
+}
+
+/* Input */
+.ai-input-row {
+  padding: 12px 14px;
+  background: white;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+#aiInput {
+  flex: 1;
+  padding: 10px 14px;
+  border: 2px solid #eee;
+  border-radius: 12px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  outline: none;
+  resize: none;
+  max-height: 90px;
+  transition: border-color .2s;
+  line-height: 1.4;
+}
+
+#aiInput:focus { border-color: #F5C300; }
+#aiInput::placeholder { color: #bbb; }
+
+#aiSendBtn {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #8B0000, #C0001A);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  color: white;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all .2s;
+}
+#aiSendBtn:hover { transform: scale(1.08); box-shadow: 0 4px 12px rgba(139,0,0,0.4); }
+#aiSendBtn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+/* Mobile */
+@media (max-width: 480px) {
+  #eatgo-ai-panel { width: calc(100vw - 24px); right: 12px; bottom: 90px; }
+  #eatgo-ai-btn   { right: 16px; bottom: 20px; }
+}

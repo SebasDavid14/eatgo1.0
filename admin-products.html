@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EATGO - Gestión Productos</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<div class="admin-layout">
+
+  <aside class="admin-sidebar">
+    <a href="admin-dashboard.html" class="admin-brand" style="display:block;text-decoration:none">
+      <div class="admin-brand-logo">EATGO</div>
+      <div class="admin-brand-sub">Panel Admin</div>
+    </a>
+    <nav class="admin-nav">
+      <div class="admin-nav-section">Principal</div>
+      <a href="admin-dashboard.html"><span class="nav-icon">📊</span> Dashboard</a>
+      <a href="admin-orders.html"><span class="nav-icon">📦</span> Pedidos</a>
+      <a href="admin-products.html" class="active"><span class="nav-icon">🍔</span> Productos</a>
+      <a href="admin-users.html"><span class="nav-icon">👥</span> Usuarios</a>
+      <div class="admin-nav-section" style="margin-top:16px">Tienda</div>
+      <a href="menu.html" target="_blank"><span class="nav-icon">🌐</span> Ver Tienda</a>
+    </nav>
+    <div class="admin-user-info">
+      <div class="admin-avatar">👤</div>
+      <div>
+        <div class="admin-user-name" id="adminName">Admin</div>
+        <div class="admin-user-role">Administrador</div>
+      </div>
+    </div>
+    <a href="#" onclick="adminLogout()" class="admin-logout">🚪 Cerrar sesión</a>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <div class="admin-page-title">🍔 Gestión de Productos</div>
+      <div class="admin-topbar-right">
+        <button class="btn-add-new" onclick="openAddProduct()">➕ Nuevo Producto</button>
+      </div>
+    </header>
+
+    <div class="admin-content">
+
+      <!-- Filtros por categoría -->
+      <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+        <button onclick="filterProductsCat('todos')" class="filter-btn-cat active" style="padding:7px 16px;border-radius:20px;border:2px solid var(--amarillo);background:var(--amarillo);font-family:Nunito,sans-serif;font-size:12px;font-weight:800;cursor:pointer;transition:all .2s">Todos</button>
+        <button onclick="filterProductsCat('hamburguesas')" class="filter-btn-cat" style="padding:7px 16px;border-radius:20px;border:2px solid #ddd;background:white;font-family:Nunito,sans-serif;font-size:12px;font-weight:800;cursor:pointer;transition:all .2s">🍔 Hamburguesas</button>
+        <button onclick="filterProductsCat('pizzas')" class="filter-btn-cat" style="padding:7px 16px;border-radius:20px;border:2px solid #ddd;background:white;font-family:Nunito,sans-serif;font-size:12px;font-weight:800;cursor:pointer;transition:all .2s">🍕 Pizzas</button>
+        <button onclick="filterProductsCat('bebidas')" class="filter-btn-cat" style="padding:7px 16px;border-radius:20px;border:2px solid #ddd;background:white;font-family:Nunito,sans-serif;font-size:12px;font-weight:800;cursor:pointer;transition:all .2s">🥤 Bebidas</button>
+        <button onclick="filterProductsCat('combos')" class="filter-btn-cat" style="padding:7px 16px;border-radius:20px;border:2px solid #ddd;background:white;font-family:Nunito,sans-serif;font-size:12px;font-weight:800;cursor:pointer;transition:all .2s">🌭 Combos</button>
+        <button onclick="filterProductsCat('postres')" class="filter-btn-cat" style="padding:7px 16px;border-radius:20px;border:2px solid #ddd;background:white;font-family:Nunito,sans-serif;font-size:12px;font-weight:800;cursor:pointer;transition:all .2s">🍦 Postres</button>
+      </div>
+
+      <div class="admin-table-section">
+        <div class="table-header">
+          <div class="table-title">Lista de Productos</div>
+          <span id="prodCount" style="font-size:13px;color:#888;font-weight:700"></span>
+        </div>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Imagen</th>
+              <th>Nombre</th>
+              <th>Categoría</th>
+              <th>Precio</th>
+              <th>Estado</th>
+              <th>Destacado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="productsTableBody">
+            <tr><td colspan="7" style="text-align:center;padding:20px">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PRODUCTO -->
+<div id="prodModal" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">Nuevo Producto</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="modal-field" style="grid-column:1/-1">
+        <label>Nombre del producto *</label>
+        <input type="text" id="prodNombre" placeholder="Ej: Hamburguesa Especial">
+      </div>
+      <div class="modal-field">
+        <label>Categoría *</label>
+        <select id="prodCategoria">
+          <option value="hamburguesas">🍔 Hamburguesas</option>
+          <option value="pizzas">🍕 Pizzas</option>
+          <option value="bebidas">🥤 Bebidas</option>
+          <option value="combos">🌭 Combos</option>
+          <option value="postres">🍦 Postres</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label>Precio (COP) *</label>
+        <input type="number" id="prodPrecio" placeholder="15000">
+      </div>
+      <div class="modal-field">
+        <label>Emoji / Ícono</label>
+        <input type="text" id="prodEmoji" placeholder="🍔" maxlength="4">
+      </div>
+      <div class="modal-field" style="grid-column:1/-1">
+        <label>Descripción</label>
+        <textarea id="prodDescripcion" rows="2" placeholder="Descripción del producto"></textarea>
+      </div>
+      <div class="modal-field" style="display:flex;align-items:center;gap:8px">
+        <input type="checkbox" id="prodDestacado" style="width:auto;accent-color:var(--rojo)">
+        <label for="prodDestacado" style="margin:0;cursor:pointer;font-size:13px">⭐ Producto destacado</label>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-modal-save" onclick="saveProduct()">💾 Guardar</button>
+      <button class="btn-modal-cancel" onclick="closeModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" style="position:fixed;bottom:24px;right:24px;background:var(--rojo);color:white;padding:12px 20px;border-radius:10px;font-weight:700;font-size:14px;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.3);transform:translateY(100px);opacity:0;transition:all .3s"></div>
+
+<script src="js/storage.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  let currentCatFilter = 'todos';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const user = Storage.requireAdmin();
+    if (!user) return;
+    document.getElementById('adminName').textContent = user.nombre || 'Admin';
+    renderProductsTableFiltered('todos');
+  });
+
+  function filterProductsCat(cat) {
+    currentCatFilter = cat;
+    document.querySelectorAll('.filter-btn-cat').forEach(b => {
+      b.style.background = 'white';
+      b.style.borderColor = '#ddd';
+    });
+    event.target.style.background = 'var(--amarillo)';
+    event.target.style.borderColor = 'var(--amarillo)';
+    renderProductsTableFiltered(cat);
+  }
+
+  function renderProductsTableFiltered(cat) {
+    const tbody = document.getElementById('productsTableBody');
+    let products = Storage.getProducts();
+    if (cat !== 'todos') products = products.filter(p => p.categoria === cat);
+    document.getElementById('prodCount').textContent = products.length + ' producto(s)';
+
+    if (products.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:#888;font-weight:700">No hay productos en esta categoría</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = products.map(p => `
+      <tr>
+        <td><div class="product-img-cell">${p.emoji || '🍽️'}</div></td>
+        <td><strong>${p.nombre}</strong><br><span style="font-size:11px;color:#888">${p.descripcion || ''}</span></td>
+        <td style="text-transform:capitalize">${p.categoria}</td>
+        <td><strong style="color:var(--rojo)">${Storage.formatPrice(p.precio)}</strong></td>
+        <td>
+          <span class="badge ${p.activo ? 'badge-activo' : 'badge-inactivo'}" style="cursor:pointer" onclick="toggleActive(${p.id})">${p.activo ? 'Activo' : 'Inactivo'}</span>
+        </td>
+        <td>${p.destacado ? '⭐ Sí' : '—'}</td>
+        <td>
+          <button class="btn-edit" onclick="openEditProduct(${p.id})">✏️ Editar</button>
+          <button class="btn-delete" onclick="deleteProduct(${p.id})">🗑️ Eliminar</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function toggleActive(id) {
+    const p = Storage.getProducts().find(pr => pr.id === id);
+    if (p) {
+      Storage.updateProduct(id, { activo: !p.activo });
+      renderProductsTableFiltered(currentCatFilter);
+      showToast(p.activo ? 'Producto desactivado' : 'Producto activado', 'success');
+    }
+  }
+
+  // Override save to refresh with filter
+  const originalSave = window.saveProduct;
+  window.saveProduct = function() {
+    const nombre      = document.getElementById('prodNombre').value.trim();
+    const categoria   = document.getElementById('prodCategoria').value;
+    const precio      = parseInt(document.getElementById('prodPrecio').value);
+    const emoji       = document.getElementById('prodEmoji').value.trim();
+    const descripcion = document.getElementById('prodDescripcion').value.trim();
+    const destacado   = document.getElementById('prodDestacado').checked;
+
+    if (!nombre || !precio) { showToast('Completa los campos requeridos', 'error'); return; }
+
+    if (editingProductId) {
+      Storage.updateProduct(editingProductId, { nombre, categoria, precio, emoji, descripcion, destacado });
+      showToast('Producto actualizado', 'success');
+    } else {
+      Storage.addProduct({ nombre, categoria, precio, emoji, descripcion, destacado });
+      showToast('Producto agregado', 'success');
+    }
+    closeModal();
+    renderProductsTableFiltered(currentCatFilter);
+  };
+</script>
+</body>
+</html>
